@@ -22,7 +22,10 @@ jobs:
       - name: Update version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USER: git
         run: |
+          git config --global user.email ${{ env.GITHUB_USER }}@istreamplanet.com
+          git config --global user.name ${{ env.GITHUB_USER }}
           git checkout -b "v${{ inputs.transcoder_version }}"
           yq e -i '.transcoder_version.version = "${{ inputs.transcoder_version }}"' charts/set-version/version.yaml
           git add charts/set-version/version.yaml
