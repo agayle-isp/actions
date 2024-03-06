@@ -1,7 +1,7 @@
 name: Create PR
 
 on:
-  workflow-dispatch:
+  workflow_dispatch:
     inputs:
       transcoder_version:
         required: true
