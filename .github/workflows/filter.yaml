@@ -12,3 +12,14 @@ jobs:
         run: |
           echo "PATH: ${PATH}"
           which git
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            workflows:
+              - .github/workflows/**
+
+      - if: steps.filter.outputs.workflows == 'true'
+        run: |
+          echo "A workflow has changed"
