@@ -41,6 +41,6 @@ jobs:
             --field sha=$SHA
           gh pr create \
             --base main \
-            --head "v${{ inputs.transcoder_version }}"
-            --title $MESSAGE
+            --head "v${{ inputs.transcoder_version }}" \
+            --title $MESSAGE \
             --body "T2 Transcoder version update to v${{ inputs.transcoder_version }}"
