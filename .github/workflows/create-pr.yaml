@@ -39,3 +39,5 @@ jobs:
             --field encoding="base64" \
             --field branch="v${{ inputs.transcoder_version }}" \
             --field sha=$SHA
+          gh pr create --fill-first --base main \
+            --head "v${{ inputs.transcoder_version }}"
