@@ -32,9 +32,10 @@ jobs:
             --header "X-GitHub-Api-Version: 2022-11-28" \
             --field ref=refs/heads/v${{ inputs.transcoder_version }} \
             --field sha=${{ github.sha }}
+          export SHA=$( git rev-parse main:$VERSION_FILE )
           gh api --method PUT /repos/${{ github.repository }}/contents/$VERSION_FILE \
             --field message="chore: update transcoder version v${{ inputs.transcoder_version }}" \
             --field content="$CONTENT" \
             --field encoding="base64" \
             --field branch="v${{ inputs.transcoder_version }}" \
-            --field sha=${{ github.sha }}
+            --field sha=$SHA
