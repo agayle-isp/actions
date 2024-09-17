@@ -42,5 +42,5 @@ jobs:
           gh pr create \
             --base main \
             --head "v${{ inputs.transcoder_version }}" \
-            --title $MESSAGE \
+            --title "$MESSAGE" \
             --body "T2 Transcoder version update to v${{ inputs.transcoder_version }}"
