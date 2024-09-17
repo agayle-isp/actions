@@ -39,5 +39,8 @@ jobs:
             --field encoding="base64" \
             --field branch="v${{ inputs.transcoder_version }}" \
             --field sha=$SHA
-          gh pr create --fill-first --base main \
+          gh pr create \
+            --base main \
             --head "v${{ inputs.transcoder_version }}"
+            --title $MESSAGE
+            --body "T2 Transcoder version update to v${{ inputs.transcoder_version }}"
