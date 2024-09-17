@@ -27,15 +27,14 @@ jobs:
         run: |
           yq e -i '.transcoder_version.version = "${{ inputs.transcoder_version }}"' $VERSION_FILE
           export CONTENT=$( base64 -i $VERSION_FILE )
-          export SHA=$( git rev-parse v${{ inputs.transcoder_version }}:$VERSION_FILE )
-          gh api --method POST /repos/agayle-isp/actions/git/refs \
+          gh api --method POST /repos/${{ github.repository }}/git/refs \
             --header "Accept: application/vnd.github+json" \
             --header "X-GitHub-Api-Version: 2022-11-28" \
-            --field "ref=refs/heads/v${{ inputs.transcoder_version }}" \
-            --field "sha=$SHA"
-          gh api --method PUT /repos/agayle-isp/actions/contents/$VERSION_FILE \
+            --field ref=refs/heads/v${{ inputs.transcoder_version }} \
+            --field sha=${{ github.sha }}
+          gh api --method PUT /repos/${{ github.repository }}/contents/$VERSION_FILE \
             --field message="chore: update transcoder version v${{ inputs.transcoder_version }}" \
             --field content="$CONTENT" \
             --field encoding="base64" \
             --field branch="v${{ inputs.transcoder_version }}" \
-            --field sha="$SHA"
+            --field sha=${{ github.sha }}
