@@ -25,7 +25,6 @@ jobs:
           VERSION_FILE: charts/set-version/version.yaml
           MESSAGE: "chore: update transcoder version ${{ inputs.transcoder_version }}"
         run: |
-          git checkout -b "v${{ inputs.transcoder_version }}"
           yq e -i '.transcoder_version.version = "${{ inputs.transcoder_version }}"' $VERSION_FILE
           export CONTENT=$( base64 -i $VERSION_FILE )
           export SHA=$( git rev-parse v${{ inputs.transcoder_version }}:$VERSION_FILE )
