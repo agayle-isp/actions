@@ -1,0 +1,30 @@
+name: cookiecutter
+
+on:
+  workflow_dispatch:
+  push:
+      branches:
+          - main
+
+jobs:
+  asdf-vm:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Install asdf on the Action Runner
+          uses: asdf-vm/actions/setup@v3.0.2
+          with:
+            asdf_branch: "v0.14.1"
+
+        - uses: actions/setup-python@v5
+          with:
+            python-version: '3.12'
+
+        - name: Install asdf tools
+          working-directory: .
+          run: |
+            cp ./.tool-versions $HOME/
+            asdf plugin-add terraform
+            asdf plugin-add terraform-docs
+            asdf plugin-add cookiecutter
+            asdf plugin-add helm
+            asdf install
