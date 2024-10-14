@@ -1,0 +1,21 @@
+name: Python
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install Python modules
+        run: |
+          python3 -m pip -q install --upgrade pip
+          pip3 -q install datadog requests_oauthlib
+      - run: python basic.py
