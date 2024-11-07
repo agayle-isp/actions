@@ -37,8 +37,7 @@ jobs:
         run: "echo tag-transcoder"
 
   make-chart:
-    if: |
-      always() && needs.setup-version.result == 'success' && (needs.build.result == 'success' || needs.tag.result == 'success')
+    if: !failure()
     name: Make Chart
     needs:
       - setup-version
@@ -50,7 +49,7 @@ jobs:
         run: "echo make-chart"
 
   update-stage:
-    if: always() && needs.make-chart.result == 'success' && needs.setup-version.result == 'success'
+    if: !failure()
     needs:
       - make-chart
       - setup-version
