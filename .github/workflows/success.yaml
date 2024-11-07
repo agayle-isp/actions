@@ -37,7 +37,7 @@ jobs:
         run: "echo tag-transcoder"
 
   make-chart:
-    if: !failure()
+    if: ! failure()
     name: Make Chart
     needs:
       - setup-version
@@ -49,7 +49,7 @@ jobs:
         run: "echo make-chart"
 
   update-stage:
-    if: !failure()
+    if: ! failure()
     needs:
       - make-chart
       - setup-version
