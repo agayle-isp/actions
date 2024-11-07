@@ -50,6 +50,7 @@ jobs:
         run: "echo make-chart"
 
   update-stage:
+    if: always() && needs.make-chart.result == 'success' && needs.setup-version.result == 'success'
     needs:
       - make-chart
       - setup-version
