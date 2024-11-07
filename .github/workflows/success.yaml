@@ -1,0 +1,54 @@
+name: Check Success
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-version:
+    name: Setup Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup-version
+        run: "echo setup-version"
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs:
+      - setup-version
+    steps:
+      - name: build-transcoder
+        if: true
+        run: "echo build-transcoder"
+
+  tag:
+    name: Tag
+    runs-on: ubuntu-latest
+    needs:
+      - setup-version
+    steps:
+      - name: tag-transcoder
+        if: false
+        run: "echo tag-transcoder"
+
+  make-chart:
+    if: |
+      always() && needs.setup-version.result == 'success' && (needs.build.result == 'success' || needs.tag.result == 'success')
+    name: Make Chart
+    needs:
+      - setup-version
+      - build
+      - tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: make-chart
+        run: "echo make-chart"
+
+  update-stage:
+    needs:
+      - make-chart
+      - setup-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: update-stage
+        run: "echo update-stage"
