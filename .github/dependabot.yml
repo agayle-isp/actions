@@ -1,0 +1,20 @@
+version: 2
+registries:
+  ghcr-docker:
+    type: docker-registry
+    url: ghcr.io
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore"
+  - package-ecosystem: "docker"
+    directory: /charts/set-version/values.yaml
+    registries:
+      - ghcr-docker
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore"
