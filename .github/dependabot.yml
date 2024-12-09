@@ -3,6 +3,9 @@ registries:
   ghcr-docker:
     type: docker-registry
     url: ghcr.io
+    replaces-base: true
+    username: ${{ secrets.T2_GHCR_USER }}
+    password: ${{ secrets.T2_GHCR_PASSWORD }}
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
