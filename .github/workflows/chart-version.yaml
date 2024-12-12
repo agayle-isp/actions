@@ -55,3 +55,12 @@ jobs:
         id: get-chart-version
         run: |
           echo "version=$CHART_VERSION" >> "$GITHUB_OUTPUT"
+
+  print-version:
+    name: Print version
+    needs: get-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output version
+        run: |
+          echo "${{ needs.get-version.outputs.chart-version }}" >> "$GITHUB_STEP_SUMMARY"
