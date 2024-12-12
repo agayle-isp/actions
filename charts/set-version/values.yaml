@@ -1,5 +1,5 @@
 actionsRunner:
   image:
     repository: actions/actions-runner
-    tag: 2.320.0
+    tag: 2.321.0
     registry: ghcr.io
