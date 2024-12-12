@@ -1,0 +1,57 @@
+name: Chart Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      chart_version:
+        description: The version of the chart
+        required: false
+
+jobs:
+  get-version:
+    name: Get Version
+    env:
+      CLUSTER_NAME: broadcast-stage-usw2-b
+      HELM_VERSION: 3.16.3
+      NAMESPACE: t2
+      REGION: us-west-2
+      RELEASE: api-gateway
+    outputs:
+      chart-version: ${{ steps.get-chart-version.outputs.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: AWS credentials
+        if: "${{ inputs.chart_version == '' }}"
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+
+      - name: Setup Helm
+        if: "${{ inputs.chart_version == '' }}"
+        uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Update kube config
+        if: "${{ inputs.chart_version == '' }}"
+        run: |
+          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --role-arn "${{ vars.AWS_ROLE_ARN }}"
+
+      - name: Get Chart Version from stage
+        if: "${{ inputs.chart_version == '' }}"
+        run: |
+          echo "CHART_VERSION=$(helm get metadata --namespace ${{ env.NAMESPACE }} ${{ env.RELEASE }} --output json \
+          | jq .version)" >> "$GITHUB_ENV"
+
+      - name: Get Chart Version from input
+        if: "${{ inputs.chart_version != '' }}"
+        run: |
+          echo "CHART_VERSION=${{ inputs.chart_version }}" >> "$GITHUB_ENV"
+
+      - name: Setup release version
+        id: get-chart-version
+        run: |
+          echo "version=$CHART_VERSION" >> "$GITHUB_OUTPUT"
