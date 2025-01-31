@@ -1,0 +1,11 @@
+name: Check OS version
+on:
+  workflow_dispatch:
+
+jobs:
+  os:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          os=$(uname -s)
+          echo "'OS'=${os}"
