@@ -28,7 +28,7 @@ jobs:
           elif [[ "${{ inputs.environment }}" == "stage" ]]; then
             clusters="$(echo '"${{ env.STAGE_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
           elif [[ "${{ inputs.environment }}" == "int" ]]; then
-            clusters="$(echo '"${{ env.INT_CLUSTERS }}"')"
+            clusters="$(echo "${{ env.INT_CLUSTERS }}")"
           elif [[ "${{ inputs.environment }}" == "dev" ]]; then
             clusters="$(echo '"${{ env.DEV_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
           fi
