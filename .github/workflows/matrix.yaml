@@ -33,6 +33,7 @@ jobs:
             clusters="$(echo '"${{ env.DEV_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
           fi
           echo "clusters=$clusters" >> $GITHUB_OUTPUT
+          echo "${clusters}"
 
   stuff:
     name: Show Result
