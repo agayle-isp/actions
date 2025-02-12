@@ -13,7 +13,7 @@ jobs:
     name: Generate Matrix
     env:
       DEV_CLUSTERS: "broadcast-dev-usw2-b broadcast-dev-use1-b"
-      INT_CLUSTERS: "broadcast-int-usw2-a broadcast-int-use1-a"
+      INT_CLUSTERS: '["broadcast-int-usw2-a","broadcast-int-use1-a"]'
       STAGE_CLUSTERS: "broadcast-stage-usw2-b broadcast-stage-use1-b"
       PROD_CLUSTERS: "broadcast-prod-usw2-b broadcast-prod-use1-b"
     outputs:
@@ -28,7 +28,7 @@ jobs:
           elif [[ "${{ inputs.environment }}" == "stage" ]]; then
             clusters="$(echo '"${{ env.STAGE_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
           elif [[ "${{ inputs.environment }}" == "int" ]]; then
-            clusters="$(echo '"${{ env.INT_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
+            clusters=${{ env.INT_CLUSTERS }}
           elif [[ "${{ inputs.environment }}" == "dev" ]]; then
             clusters="$(echo '"${{ env.DEV_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
           fi
