@@ -1,0 +1,47 @@
+name: Determine Matrix
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: The environment to deploy to
+        required: true
+        default: dev
+
+jobs:
+  generate-matrix:
+    name: Generate Matrix
+    env:
+      DEV_CLUSTERS: "broadcast-dev-usw2-b broadcast-dev-use1-b"
+      INT_CLUSTERS: "broadcast-int-usw2-b broadcast-int-use1-b"
+      STAGE_CLUSTERS: "broadcast-stage-usw2-b broadcast-stage-use1-b"
+      PROD_CLUSTERS: "broadcast-prod-usw2-b broadcast-prod-use1-b"
+    outputs:
+      clusters: ${{ steps.get-clusters.outputs.clusters }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Clusters
+        id: get-clusters
+        run: |
+          if [[ "${{ inputs.environment }}" == "prod" ]]; then
+            clusters="$(echo '"${{ env.PROD_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
+          elif [[ "${{ inputs.environment }}" == "stage" ]]; then
+            clusters="$(echo '"${{ env.STAGE_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
+          elif [[ "${{ inputs.environment }}" == "int" ]]; then
+            clusters="$(echo '"${{ env.INT_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
+          elif [[ "${{ inputs.environment }}" == "dev" ]]; then
+            clusters="$(echo '"${{ env.DEV_CLUSTERS }}"' | jq -c '. | split(" ") | map(select(length > 0))')"
+          fi
+          echo "clusters=$clusters" >> $GITHUB_OUTPUT
+
+  stuff:
+    name: Show Result
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cluster: ${{ fromJSON(needs.generate-matrix.outputs.clusters)}}
+    steps:
+      - name: Show Me
+        run: |
+          echo "Cluster: ${{ matrix.cluster }}"
