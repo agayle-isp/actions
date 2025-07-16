@@ -10,13 +10,16 @@ on:
 jobs:
   fail:
     name: Fail
-    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: fail
+        continue-on-error: true
         run: |-
           echo "This job is expected to fail"
           exit 1
+      - name: check failure
+        if: ${{ failure() }}
+        run: echo "The previous step failed as expected"
 
   success:
     name: Succeed
