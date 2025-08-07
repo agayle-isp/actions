@@ -1,0 +1,29 @@
+name: Set Version
+
+on:
+  workflow_call:
+    outputs:
+      version-tag:
+        description: "The version tag that was set"
+        value: ${{ jobs.set-version.outputs.versiontag }}
+
+permissions:
+  contents: read
+
+jobs:
+  set-version:
+    runs-on: ubuntu-latest
+    outputs:
+      versiontag: ${{ steps.set-version.outputs.versiontag }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set Version Tag
+        id: set-version
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            VERSION_TAG="${GITHUB_REF##refs/*/}"
+          else
+            VERSION_TAG="v0.0.$(date +%s)"
+          fi
+          echo "versiontag=$VERSION_TAG" >> $GITHUB_OUTPUT
+          echo "Set version tag to $VERSION_TAG"
