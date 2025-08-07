@@ -13,5 +13,4 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/workflows/set-version.yml@chore/set-version
+      - uses: ./.github/workflows/set-version.yml
