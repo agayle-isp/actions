@@ -6,25 +6,15 @@ on:
       enable-semver:
         description: Flag to enable semantic versioning.
         type: boolean
-        default: false
+        default: true
       enable-timestamp:
         description: Flag to enable timestamp-based versioning.
         type: boolean
-        default: false
+        default: true
     outputs:
       version-tag:
         description: The version tag that was set.
         value: ${{ jobs.set-version.outputs.versiontag }}
-  workflow_dispatch:
-    inputs:
-      enable-semver:
-        description: Flag to enable semantic versioning.
-        type: boolean
-        default: false
-      enable-timestamp:
-        description: Flag to enable timestamp-based versioning.
-        type: boolean
-        default: false
 
 permissions:
   contents: read
