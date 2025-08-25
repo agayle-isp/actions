@@ -35,4 +35,4 @@ jobs:
           tags: |
             type=sha
             type=semver,enable=${{ inputs.enable-semver }},pattern={{raw}}
-            type=raw,enable=${{ inputs.enable-timestamp }},prefix=0.0.,suffix=,value={{str(int(time.time()/1000))}}
+            type=raw,enable=${{ inputs.enable-timestamp }},prefix=0.0.,suffix=,value=${{ github.run_id }}
