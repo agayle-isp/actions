@@ -23,7 +23,7 @@ jobs:
   set-version:
     runs-on: ubuntu-latest
     outputs:
-      versiontag: ${{ steps.meta.outputs.tags }}
+      versiontag: ${{ steps.meta.outputs.version }}
     steps:
       - uses: actions/checkout@v4
       - uses: docker/metadata-action@v5
@@ -36,3 +36,10 @@ jobs:
             type=sha
             type=semver,enable=${{ inputs.enable-semver }},pattern={{raw}}
             type=raw,enable=${{ inputs.enable-timestamp }},prefix=0.0.,suffix=,value=${{ github.run_id }}
+  print-version:
+    needs: set-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the version tag
+        run: |
+          echo "Version Tag: ${{ needs.set-version.outputs.versiontag }}"
