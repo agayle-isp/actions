@@ -35,7 +35,4 @@ jobs:
           tags: |
             type=sha
             type=semver,enable=${{ inputs.enable-semver }},pattern={{raw}}
-
-      - name: Show tags
-        run: |
-          echo ${{ steps.meta.outputs.tags }}
+            type=raw,enable=${{ inputs.enable-timestamp }},prefix="0.0.",suffix=,value={{str(int(time.time()/1000))}}
