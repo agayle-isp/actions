@@ -1,0 +1,23 @@
+name: Force Failure
+
+on:
+  pull_request:
+
+jobs:
+  fail:
+    name: Fail
+    runs-on: ubuntu-latest
+    steps:
+      - name: fail
+        run: |-
+          echo "This job is expected to fail"
+          exit 1
+  notify:
+    name: Notify
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs: fail
+    steps:
+      - name: check failure
+        if: ${{ needs.fail.result == 'failure' }}
+        run: echo "The previous step failed as expected"
