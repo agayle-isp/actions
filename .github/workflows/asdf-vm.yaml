@@ -11,7 +11,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Install asdf on the Action Runner
-          uses: asdf-vm/actions/setup@v4.0.0
+          uses: asdf-vm/actions/setup@v4.0.1
           with:
             asdf_branch: "v0.14.1"
 
