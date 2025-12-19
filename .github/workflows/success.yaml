@@ -17,7 +17,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    if: "${{ github.event.inputs.tag == '' }}"
+    if: ${{ github.event.inputs.tag == '' }}
     needs:
       - setup-version
     steps:
@@ -28,7 +28,7 @@ jobs:
   tag:
     name: Tag
     runs-on: ubuntu-latest
-    if: "${{ github.event.inputs.tag != '' }}"
+    if: ${{ github.event.inputs.tag != '' }}
     needs:
       - setup-version
     steps:

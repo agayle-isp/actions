@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: AWS credentials
-        if: "${{ inputs.chart_version == '' }}"
+        if: ${{ inputs.chart_version == '' }}
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -30,24 +30,24 @@ jobs:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
 
       - name: Setup Helm
-        if: "${{ inputs.chart_version == '' }}"
+        if: ${{ inputs.chart_version == '' }}
         uses: azure/setup-helm@v4
         with:
           version: ${{ env.HELM_VERSION }}
 
       - name: Update kube config
-        if: "${{ inputs.chart_version == '' }}"
+        if: ${{ inputs.chart_version == '' }}
         run: |
           aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --role-arn "${{ vars.AWS_ROLE_ARN }}"
 
       - name: Get Chart Version from stage
-        if: "${{ inputs.chart_version == '' }}"
+        if: ${{ inputs.chart_version == '' }}
         run: |
           echo "CHART_VERSION=$(helm get metadata --namespace ${{ env.NAMESPACE }} ${{ env.RELEASE }} --output json \
           | jq .version)" >> "$GITHUB_ENV"
 
       - name: Get Chart Version from input
-        if: "${{ inputs.chart_version != '' }}"
+        if: ${{ inputs.chart_version != '' }}
         run: |
           echo "CHART_VERSION=${{ inputs.chart_version }}" >> "$GITHUB_ENV"
 

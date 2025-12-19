@@ -1,0 +1,27 @@
+name: Promote Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        type: choice
+        description: "The environment to promote to"
+        options:
+          - "prod"
+          - "stage"
+
+jobs:
+  promote-release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cluster:
+          - "broadcast-prod-usw2-b"
+          - "broadcast-prod-use1-b"
+          - "broadcast-stage-usw2-b"
+          - "broadcast-stage-use1-b"
+    steps:
+      - name: validate target
+        if: contains(matrix.cluster, inputs.target)
+        run: |
+          echo "Target is: ${{ inputs.target }}"
